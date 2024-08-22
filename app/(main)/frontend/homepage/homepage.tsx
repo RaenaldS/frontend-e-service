@@ -76,7 +76,7 @@ const Homepage = async () => {
                   href="#"
                   className="block rounded px-3 py-2  text-black hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:p-0 md:text-lg md:text-white md:hover:bg-transparent md:hover:text-green-600 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
                 >
-                  E-Layanan
+                  Login
                 </a>
               </li>
               <li>
