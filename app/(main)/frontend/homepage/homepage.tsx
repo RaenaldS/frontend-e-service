@@ -1,16 +1,60 @@
 "use client";
 
-import { useEffect } from "react";
-import { initFlowbite } from "flowbite";
+import { useState, ChangeEvent, FormEvent } from "react";
+
 
 export const metadata = {
   title: "Homepage",
 };
 
-const Homepage = async () => {
-  useEffect(() => {
-    initFlowbite();
-  }, []);
+interface FormData {
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+}
+
+const Homepage = () => {
+
+  const [formData, setFormData] = useState<FormData>({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch("../../../api/send-mail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert("Email terkirim: " + data.message);
+      } else {
+        alert("Gagal mengirim email: " + data.error);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
   return (
     <div className="container-fluid">
       <nav className="absolute left-0 right-0 top-0 z-50 bg-transparent dark:bg-transparent">
@@ -59,7 +103,7 @@ const Homepage = async () => {
             <ul className="mt-4 flex flex-col rounded-lg border border-gray-100 bg-white p-4 font-medium dark:border-gray-700 dark:bg-gray-800 md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-transparent md:p-0 md:dark:bg-gray-900 rtl:space-x-reverse ">
               <li>
                 <a
-                  href="#"
+                  href="#home"
                   className="block rounded px-3 py-2  text-black hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:p-0 md:text-lg md:text-white md:hover:bg-transparent md:hover:text-green-600 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
                   aria-current="page"
                 >
@@ -68,7 +112,16 @@ const Homepage = async () => {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="#pengumuman"
+                  className="block rounded px-3 py-2  text-black hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:p-0 md:text-lg md:text-white md:hover:bg-transparent md:hover:text-green-600 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
+                  aria-current="page"
+                >
+                  Pengumuman
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#profil"
                   className="block rounded px-3 py-2  text-black hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:p-0 md:text-lg md:text-white md:hover:bg-transparent md:hover:text-green-600 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
                 >
                   Profil
@@ -77,7 +130,7 @@ const Homepage = async () => {
 
               <li>
                 <a
-                  href="#"
+                  href="#kontak"
                   className="block rounded px-3 py-2  text-black hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:p-0 md:text-lg md:text-white md:hover:bg-transparent md:hover:text-green-600 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
                 >
                   Kontak
@@ -96,7 +149,10 @@ const Homepage = async () => {
         </div>
       </nav>
 
-      <section className="h-auto content-center bg-gray-700 bg-[url('/assets/images/sawah.jpg')] bg-cover bg-no-repeat bg-blend-multiply lg:h-screen">
+      <section
+        className="h-auto content-center bg-gray-700 bg-[url('/assets/images/sawah.jpg')] bg-cover bg-no-repeat bg-blend-multiply lg:h-screen"
+        id="home"
+      >
         <div className="mx-auto max-w-screen-xl px-4 py-24 text-center md:items-center ">
           <img
             src="/assets/images/logokukar.png"
@@ -444,7 +500,10 @@ const Homepage = async () => {
           </div>
         </div>
       </section>
-      <section className="container mx-auto my-10 p-5 md:rounded-md md:bg-white md:p-10 md:shadow-lg">
+      <section
+        className="container mx-auto my-10 p-5 md:rounded-md md:bg-white md:p-10 md:shadow-lg"
+        id="pengumuman"
+      >
         <h1 className="text-center text-2xl font-extrabold leading-none tracking-tight text-black md:mb-10 md:py-5 md:text-3xl lg:text-4xl">
           PENGUMUMAN TERBARU DESA
         </h1>
@@ -492,7 +551,10 @@ const Homepage = async () => {
         </div>
       </section>
 
-      <section className="container mx-auto my-10 md:box-content md:rounded-md md:bg-white md:shadow-lg  ">
+      <section
+        className="container mx-auto my-10 md:box-content md:rounded-md md:bg-white md:shadow-lg"
+        id="profil"
+      >
         <h1 className="text-center text-2xl font-extrabold leading-none tracking-tight text-black md:-mb-5 md:py-10 md:text-3xl lg:text-4xl">
           SAMBUTAN KEPALA DESA
         </h1>
@@ -510,9 +572,8 @@ const Homepage = async () => {
               Desa, saya merasa bangga dapat mempersembahkan platform ini
               sebagai sarana informasi dan komunikasi bagi seluruh masyarakat.
               Semoga dengan adanya website ini, kita semua dapat lebih mudah
-              mengakses informasi terkini seputar desa, serta mempererat
-              silaturahmi dan gotong royong dalam membangun Desa Kerta Buana
-              yang lebih maju, sejahtera, dan berdaya saing.
+              mengakses informasi terkini seputar desa, serta mempermudah akses
+              masyarakat dalam proses surat menyurat
             </p>
           </div>
         </div>
@@ -533,105 +594,63 @@ const Homepage = async () => {
               dalam kehidupan masyarakatnya yang terus berkembang.
             </p>
 
-            <div
-              id="controls-carousel"
-              className="relative w-full"
-              data-carousel="static"
-            >
-              <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
-                <div
-                  className="hidden duration-700 ease-in-out"
-                  data-carousel-item
-                >
-                  <img
-                    src="/assets/images/cr-1.jpg"
-                    className="absolute left-1/2 top-1/2 block w-full -translate-x-1/2 -translate-y-1/2"
-                    alt="..."
-                  />
-                </div>
-
-                <div
-                  className="hidden duration-700 ease-in-out"
-                  data-carousel-item="active"
-                >
-                  <img
-                    src="/assets/images/cr-2.jpeg"
-                    className="absolute left-1/2 top-1/2 block w-full -translate-x-1/2 -translate-y-1/2"
-                    alt="..."
-                  />
-                </div>
-
-                <div
-                  className="hidden duration-700 ease-in-out"
-                  data-carousel-item
-                >
-                  <img
-                    src="/assets/images/cr-3.jpg"
-                    className="absolute left-1/2 top-1/2 block w-full -translate-x-1/2 -translate-y-1/2"
-                    alt="..."
-                  />
-                </div>
-
-                <div
-                  className="hidden duration-700 ease-in-out"
-                  data-carousel-item
-                >
-                  <img
-                    src="/assets/images/cr-4.jpg"
-                    className="absolute left-1/2 top-1/2 block w-full -translate-x-1/2 -translate-y-1/2"
-                    alt="..."
-                  />
+            <div className="carousel w-full">
+              <div id="slide1" className="carousel-item relative w-full ">
+                <img
+                  src="/assets/images/cr-1.jpg"
+                  className="h-96 w-full object-cover"
+                />
+                <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
+                  <a href="#slide4" className="btn btn-circle">
+                    ❮
+                  </a>
+                  <a href="#slide2" className="btn btn-circle">
+                    ❯
+                  </a>
                 </div>
               </div>
-
-              <button
-                type="button"
-                className="group absolute start-0 top-0 z-30 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
-                data-carousel-prev
-              >
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-4 group-focus:ring-white dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60 dark:group-focus:ring-gray-800/70">
-                  <svg
-                    className="h-4 w-4 text-white dark:text-gray-800 rtl:rotate-180"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 6 10"
-                  >
-                    <path
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M5 1 1 5l4 4"
-                    />
-                  </svg>
-                  <span className="sr-only">Previous</span>
-                </span>
-              </button>
-              <button
-                type="button"
-                className="group absolute end-0 top-0 z-30 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
-                data-carousel-next
-              >
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-4 group-focus:ring-white dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60 dark:group-focus:ring-gray-800/70">
-                  <svg
-                    className="h-4 w-4 text-white dark:text-gray-800 rtl:rotate-180"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 6 10"
-                  >
-                    <path
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="m1 9 4-4-4-4"
-                    />
-                  </svg>
-                  <span className="sr-only">Next</span>
-                </span>
-              </button>
+              <div id="slide2" className="carousel-item relative w-full">
+                <img
+                  src="/assets/images/cr-2.jpeg"
+                  className="h-96 w-full object-cover"
+                />
+                <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
+                  <a href="#slide1" className="btn btn-circle">
+                    ❮
+                  </a>
+                  <a href="#slide3" className="btn btn-circle">
+                    ❯
+                  </a>
+                </div>
+              </div>
+              <div id="slide3" className="carousel-item relative w-full">
+                <img
+                  src="/assets/images/cr-3.jpg"
+                  className="h-96 w-full object-cover"
+                />
+                <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
+                  <a href="#slide2" className="btn btn-circle">
+                    ❮
+                  </a>
+                  <a href="#slide4" className="btn btn-circle">
+                    ❯
+                  </a>
+                </div>
+              </div>
+              <div id="slide4" className="carousel-item relative w-full">
+                <img
+                  src="/assets/images/cr-4.jpg"
+                  className="h-96 w-full object-cover"
+                />
+                <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
+                  <a href="#slide3" className="btn btn-circle">
+                    ❮
+                  </a>
+                  <a href="#slide1" className="btn btn-circle">
+                    ❯
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div className="clip-irregular md:flex md:items-center lg:h-auto lg:w-full ">
@@ -644,7 +663,10 @@ const Homepage = async () => {
         </div>
       </section>
 
-      <section className="container mx-auto my-10 py-24 md:box-content md:rounded-md md:bg-white md:shadow-lg">
+      <section
+        className="container mx-auto my-10 py-24 md:box-content md:rounded-md md:bg-white md:shadow-lg"
+        id="kontak"
+      >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2">
             <div className="mb-10 lg:mb-0">
@@ -733,30 +755,46 @@ const Homepage = async () => {
               <h2 className="font-manrope mb-11 text-4xl font-semibold leading-10 text-green-600">
                 Area Pengaduan
               </h2>
-              <input
-                type="text"
-                className="mb-10 h-12 w-full rounded-full  border border-gray-200 bg-transparent pl-4 text-lg font-normal leading-7 text-gray-600 placeholder-gray-400 shadow-sm focus:outline-none"
-                placeholder="Name"
-              />
-              <input
-                type="text"
-                className="mb-10 h-12 w-full rounded-full border border-gray-200 bg-transparent pl-4 text-lg font-normal leading-7 text-gray-600 placeholder-gray-400 shadow-sm focus:outline-none"
-                placeholder="Email"
-              />
-              <input
-                type="text"
-                className="mb-10 h-12 w-full rounded-full border border-gray-200 bg-transparent pl-4 text-lg font-normal leading-7 text-gray-600 placeholder-gray-400 shadow-sm focus:outline-none"
-                placeholder="Phone"
-              />
-
-              <textarea
-                id="message"
-                className="mb-10 w-full rounded-3xl border border-gray-200 bg-transparent pl-4 text-lg font-normal leading-7 text-gray-600 placeholder-gray-400 shadow-sm focus:outline-none"
-                placeholder="Message"
-              ></textarea>
-              <button className="h-12 w-full rounded-full bg-green-600 text-base font-semibold leading-6 text-white shadow-sm transition-all duration-700 hover:bg-green-800">
-                Kirim
-              </button>
+              <form onSubmit={handleSubmit}>
+                <input
+                  type="text"
+                  name="name"
+                  className="mb-10 h-12 w-full rounded-full border border-gray-200 bg-transparent pl-4 text-lg font-normal leading-7 text-gray-600 placeholder-gray-400 shadow-sm focus:outline-none"
+                  placeholder="Name"
+                  value={formData.name}
+                  onChange={handleChange}
+                />
+                <input
+                  type="email"
+                  name="email"
+                  className="mb-10 h-12 w-full rounded-full border border-gray-200 bg-transparent pl-4 text-lg font-normal leading-7 text-gray-600 placeholder-gray-400 shadow-sm focus:outline-none"
+                  placeholder="Email"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+                <input
+                  type="text"
+                  name="phone"
+                  className="mb-10 h-12 w-full rounded-full border border-gray-200 bg-transparent pl-4 text-lg font-normal leading-7 text-gray-600 placeholder-gray-400 shadow-sm focus:outline-none"
+                  placeholder="Phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                />
+                <textarea
+                  id="message"
+                  name="message"
+                  className="mb-10 w-full rounded-3xl border border-gray-200 bg-transparent pl-4 text-lg font-normal leading-7 text-gray-600 placeholder-gray-400 shadow-sm focus:outline-none"
+                  placeholder="Message"
+                  value={formData.message}
+                  onChange={handleChange}
+                ></textarea>
+                <button
+                  type="submit"
+                  className="h-12 w-full rounded-full bg-green-600 text-base font-semibold leading-6 text-white shadow-sm transition-all duration-700 hover:bg-green-800"
+                >
+                  Kirim
+                </button>
+              </form>
             </div>
           </div>
         </div>
@@ -796,8 +834,12 @@ const Homepage = async () => {
         </nav>
         <nav>
           <h6 className="footer-title">Layanan Terkait</h6>
-          <a className="link-hover link">Pembuatan Surat</a>
-          <a className="link-hover link">Area Pengaduan</a>
+          <a href="#home" className="link-hover link">
+            Pembuatan Surat
+          </a>
+          <a href="#kontak" className="link-hover link">
+            Area Pengaduan
+          </a>
         </nav>
       </footer>
     </div>
