@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
   try {
     // Panggil fungsi sendMail yang ada di lib/mail.ts
     await sendMail({
-      to: "raenaldsyaputra22@gmail.com",
+      to: "desakertabuana24@gmail.com",
       name,
       subject: "Pengaduan Baru",
       body: emailBody,

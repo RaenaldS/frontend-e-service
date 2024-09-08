@@ -2,7 +2,6 @@
 
 import { useState, ChangeEvent, FormEvent } from "react";
 
-
 export const metadata = {
   title: "Homepage",
 };
@@ -15,7 +14,6 @@ interface FormData {
 }
 
 const Homepage = () => {
-
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
@@ -698,9 +696,14 @@ const Homepage = () => {
                             stroke-linejoin="round"
                           />
                         </svg>
-                        <h5 className="ml-5 text-base font-normal leading-6 text-black">
-                          08xx-xxxx-xxxx
-                        </h5>
+                        <div>
+                          <h5 className="ml-5 text-base font-normal leading-6 text-black">
+                            Bpk. Hari Kurniawan Wibawa
+                          </h5>
+                          <h5 className="ml-5 text-base font-normal leading-6 text-black">
+                            0822-5546-2424
+                          </h5>
+                        </div>
                       </a>
                       <a href="javascript:;" className="mb-6 flex items-center">
                         <svg
@@ -718,7 +721,7 @@ const Homepage = () => {
                           />
                         </svg>
                         <h5 className="ml-5 text-base font-normal leading-6 text-black">
-                          kertabuana@gmail.com
+                          desakertabuana24@gmail.com
                         </h5>
                       </a>
                       <a href="javascript:;" className="flex items-center">
@@ -742,7 +745,7 @@ const Homepage = () => {
                         </svg>
                         <h5 className="ml-5 text-base font-normal leading-6 text-black">
                           Kalimantan Timur, Kab. Kutai Kartanegara, Kec.
-                          Tenggarong Seberang, 75262
+                          Tenggarong Seberang, 75572
                         </h5>
                       </a>
                     </div>
@@ -827,10 +830,21 @@ const Homepage = () => {
           <h6 className="footer-title">Hubungi Kami</h6>
           <p className="text-base">
             Kalimantan Timur, Kab. Kutai Kartanegara, Kec. Tenggarong Seberang,
-            75262
+            75572
           </p>
-          <a className="link-hover link">Telepon : 08xx-xxxx-xxxx</a>
-          <a className="link-hover link">Email : Desa@gmail.com</a>
+          <a className="link-hover link">Telepon : 0822-5546-2424 </a>
+          <a className="link-hover link">Email : desakertabuana24@gmail.com</a>
+          <div className="flex space-x-5">
+            <a href="https://www.facebook.com/kerta.buana.94">
+              <img src="/assets/images/fb.svg" className="w-10" alt="" />
+            </a>
+            <a href="https://www.instagram.com/kertabuana?igsh=MW4xZzcxN3ZxYzU3Zg==">
+              <img src="/assets/images/ig.png" className="w-10" alt="" />
+            </a>
+            <a href="https://youtu.be/nOFqH1dfZCw?si=rnIMyB0wNoUaqubs">
+              <img src="/assets/images/yt.svg" className="w-10" alt="" />
+            </a>
+          </div>
         </nav>
         <nav>
           <h6 className="footer-title">Layanan Terkait</h6>
