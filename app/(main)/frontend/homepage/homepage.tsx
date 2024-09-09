@@ -698,7 +698,7 @@ const Homepage = () => {
                         </svg>
                         <div>
                           <h5 className="ml-5 text-base font-normal leading-6 text-black">
-                            Bpk. Hari Kurniawan Wibawa
+                            Bpk. Hari Kurnia Wibawa
                           </h5>
                           <h5 className="ml-5 text-base font-normal leading-6 text-black">
                             0822-5546-2424
